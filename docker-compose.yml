@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+
+  web:
+    build: ./build/app
+    ports:
+      - 14080:80
+    volumes:
+      - /Users/tanimizushingo/src/go_todo/src:/usr/local/go/src/go_todo
+    tty: true
+    working_dir: /usr/local/go/src/go_todo
+    depends_on:
+      - db
+  db:
+    platform: linux/x86_64 # M!チップ対応のため追記
+    build: ./build/db
+    environment:
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=userpass
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=todo
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
