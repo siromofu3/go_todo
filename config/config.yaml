@@ -1,0 +1,6 @@
+db:
+  user: root
+  password: rootpass
+  host: db
+  port: 3306
+  dbname: todo

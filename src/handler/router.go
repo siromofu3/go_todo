@@ -7,6 +7,6 @@ import (
 func InitRouting(e *echo.Echo, todoHandler TodoHandler) {
 	e.GET("/", todoHandler.View())
 	e.GET("/search", todoHandler.Search())
-	e.POST("/todo-create", todoHandler.Add())
-	e.POST("/todo-update", todoHandler.Edit())
+	e.POST("/create", todoHandler.Add())
+	e.POST("/update", todoHandler.Edit())
 }

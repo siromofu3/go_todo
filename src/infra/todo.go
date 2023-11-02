@@ -2,7 +2,6 @@ package infra
 
 import (
 	"fmt"
-	"log"
 	"go_todo/domain/model"
 	"go_todo/domain/repository"
 )
@@ -16,13 +15,14 @@ func NewTodoRepository(sqlHandler SqlHandler) repository.TodoRepository {
 	return &todoRepository
 }
 
-func (todoRepo *TodoRepository) FindAll() (todos []*model.Todo, err error) {
-	log.Print("TodoRepository View")
+func (todoRepo *TodoRepository) FindAll() ([]*model.Todo, error) {
+	todos := []*model.Todo{}
+
 	rows, err := todoRepo.SqlHandler.Conn.Query("SELECT * FROM todos")
 	defer rows.Close()
 	if err != nil {
 		fmt.Println(err)
-		return
+		return todos, err
 	}
 
 	for rows.Next() {
@@ -30,15 +30,17 @@ func (todoRepo *TodoRepository) FindAll() (todos []*model.Todo, err error) {
 		rows.Scan(&todo.ID, &todo.Task, &todo.LimitDate, &todo.Status)
 		todos = append(todos, &todo)
 	}
-	return
+	return todos, err
 }
 
-func (todoRepo *TodoRepository) Find(word string) (todos []*model.Todo, err error) {
+func (todoRepo *TodoRepository) Find(word string) ([]*model.Todo, error) {
+	todos := []*model.Todo{}
+
 	rows, err := todoRepo.SqlHandler.Conn.Query("SELECT * FROM todos WHERE task LIKE ?", "%"+word+"%")
 	defer rows.Close()
 	if err != nil {
 		fmt.Println(err)
-		return
+		return todos, err
 	}
 
 	for rows.Next() {
@@ -46,7 +48,7 @@ func (todoRepo *TodoRepository) Find(word string) (todos []*model.Todo, err erro
 		rows.Scan(&todo.ID, &todo.Task, &todo.LimitDate, &todo.Status)
 		todos = append(todos, &todo)
 	}
-	return
+	return todos, err
 }
 
 func (todoRepo *TodoRepository) Create(todo *model.Todo) (*model.Todo, error) {

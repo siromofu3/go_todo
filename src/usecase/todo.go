@@ -1,16 +1,15 @@
 package usecase
 
 import (
-	"log"
 	"go_todo/domain/model"
 	"go_todo/domain/repository"
 )
 
 type TodoUsecase interface {
-	Search(string) (todo []*model.Todo, err error)
-	View() (todo[]*model.Todo, err error)
-	Add(*model.Todo) (err error)
-	Edit(*model.Todo) (err error)
+	Search(string) ([]*model.Todo, error)
+	View() ([]*model.Todo, error)
+	Add(*model.Todo) (error)
+	Edit(*model.Todo) (error)
 }
 
 type todoUsecase struct {
@@ -22,24 +21,22 @@ func NewTodoUsecase(todoRepo repository.TodoRepository) TodoUsecase {
 	return &todoUsecase
 }
 
-func (tu *todoUsecase) Search(word string) (todo []*model.Todo, err error) {
-	todo, err = tu.todoRepo.Find(word)
-	return
+func (tu *todoUsecase) Search(word string) ([]*model.Todo, error) {
+	todo, err := tu.todoRepo.Find(word)
+	return todo, err
 }
 
-func (tu *todoUsecase) View() (todo []*model.Todo, err error) {
-	log.Print("TodoUsecase View")
-	todo, err = tu.todoRepo.FindAll()
-	return
+func (tu *todoUsecase) View() ([]*model.Todo, error) {
+	todo, err := tu.todoRepo.FindAll()
+	return todo, err
 }
 
-func (tu *todoUsecase) Add(todo *model.Todo) (err error) {
-	_, err = tu.todoRepo.Create(todo)
-	log.Print(err)
-	return
+func (tu *todoUsecase) Add(todo *model.Todo) (error) {
+	_, err := tu.todoRepo.Create(todo)
+	return err
 }
 
-func (tu *todoUsecase) Edit(todo *model.Todo) (err error) {
-	_, err = tu.todoRepo.Update(todo)
-	return
+func (tu *todoUsecase) Edit(todo *model.Todo) (error) {
+	_, err := tu.todoRepo.Update(todo)
+	return err
 }

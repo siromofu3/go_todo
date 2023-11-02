@@ -7,9 +7,12 @@ services:
     ports:
       - 14080:80
     volumes:
-      - /Users/tanimizushingo/src/go_todo/src:/usr/local/go/src/go_todo
+      - $HOME/src/go_todo/src:/usr/local/go/src/go_todo
+      - $HOME/src/go_todo/config:/mnt/config
     tty: true
     working_dir: /usr/local/go/src/go_todo
+    environment:
+      - CONFIG_PATH=/mnt/config/config.yaml
     depends_on:
       - db
   db:
